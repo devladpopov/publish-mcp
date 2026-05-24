@@ -1,0 +1,10 @@
+{
+  "mode": "yolo",
+  "depth": "quick",
+  "execution": "parallel",
+  "commit_docs": true,
+  "research": true,
+  "researcher_model": "sonnet",
+  "synthesizer_model": "sonnet",
+  "roadmapper_model": "sonnet"
+}
