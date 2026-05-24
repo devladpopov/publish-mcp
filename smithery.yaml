@@ -1,0 +1,44 @@
+name: publish-mcp
+description: MCP server for publishing content to Telegram, VK, MAX, and Threads from AI agents
+version: 0.1.0
+license: MIT
+author: Vladislav Popov
+repository: https://github.com/devladpopov/publish-mcp
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      TELEGRAM_BOT_TOKEN:
+        type: string
+        description: Telegram Bot API token
+      TELEGRAM_CHAT_ID:
+        type: string
+        description: "Telegram channel ID (@username or -100xxx)"
+      VK_ACCESS_TOKEN:
+        type: string
+        description: VK community access token
+      VK_GROUP_ID:
+        type: string
+        description: VK community/group ID
+      MAX_BOT_TOKEN:
+        type: string
+        description: MAX messenger bot token
+      MAX_CHAT_ID:
+        type: string
+        description: MAX chat ID
+      THREADS_ACCESS_TOKEN:
+        type: string
+        description: Meta Threads access token
+      THREADS_USER_ID:
+        type: string
+        description: Threads user ID
+  commandFunction: |-
+    (config) => ({
+      command: 'npx',
+      args: ['-y', 'publish-mcp'],
+      env: Object.fromEntries(
+        Object.entries(config).filter(([_, v]) => v)
+      )
+    })
