@@ -85,15 +85,34 @@ THREADS_ACCESS_TOKEN=xxx
 THREADS_USER_ID=12345678
 ```
 
-### AI (required for content factory tools)
+### AI Backend (required for content factory tools)
+
+Set ONE of these. Priority: explicit `AI_PROVIDER` > first key found.
 
 ```
-GEMINI_API_KEY=AIza...            # Free tier available
-# or
-OPENAI_API_KEY=sk-...             # Paid
+# Gemini (free tier available)
+GEMINI_API_KEY=AIza...
+GEMINI_MODEL=gemini-2.5-flash         # optional
 
-GEMINI_MODEL=gemini-2.5-flash    # optional, default
-OPENAI_MODEL=gpt-4o-mini          # optional, default
+# OpenAI
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4o-mini              # optional
+
+# Claude (Anthropic)
+ANTHROPIC_API_KEY=sk-ant-...
+ANTHROPIC_MODEL=claude-sonnet-4-20250514  # optional
+
+# Ollama (local, free, no API key)
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.1                  # optional
+
+# Any OpenAI-compatible API (Together, Groq, Fireworks, LM Studio, etc.)
+OPENAI_COMPATIBLE_BASE_URL=https://api.together.xyz/v1
+OPENAI_COMPATIBLE_API_KEY=xxx
+OPENAI_COMPATIBLE_MODEL=meta-llama/Llama-3.1-70B-Instruct
+
+# Force specific provider (overrides auto-detection)
+AI_PROVIDER=gemini|openai|anthropic|ollama|openai-compatible
 ```
 
 ### Multi-Channel Config
