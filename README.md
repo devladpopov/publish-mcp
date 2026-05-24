@@ -1,12 +1,10 @@
 # publish-mcp
 
-MCP server for publishing content to **Telegram**, **VK**, **MAX**, and **Threads** from AI coding agents.
+AI-powered content factory as an MCP server. Generate, translate, and publish content to **Telegram**, **VK**, **MAX**, and **Threads** from Claude Code, Cursor, or any MCP client.
 
-One tool call from Claude Code, Cursor, or any MCP client, your post is live.
+One config snippet. Full content pipeline: brand setup, competitor analysis, source discovery, AI writing, image generation, multi-channel publishing.
 
 ## Quick Start
-
-Add to your Claude Desktop / Cursor MCP config:
 
 ```json
 {
@@ -16,16 +14,33 @@ Add to your Claude Desktop / Cursor MCP config:
       "args": ["-y", "publish-mcp"],
       "env": {
         "TELEGRAM_BOT_TOKEN": "123456:ABC-DEF...",
-        "TELEGRAM_CHAT_ID": "@my_channel"
+        "TELEGRAM_CHAT_ID": "@my_channel",
+        "GEMINI_API_KEY": "AIza..."
       }
     }
   }
 }
 ```
 
-That's it. Your AI agent now has a `publish` tool.
+Then ask your AI agent:
 
-## Tools
+> "Set up my brand for the AI education niche, find content sources, generate a post, create an image, and publish to Telegram"
+
+## Tools (11 total)
+
+### Content Factory
+
+| Tool | Description |
+|------|-------------|
+| `setup_brand` | Configure niche, tone of voice, audience, post structure, sample posts |
+| `get_brand` | Show current brand profile |
+| `analyze_competitors` | Scrape competitor pages, analyze their content strategy with AI |
+| `find_sources` | Discover RSS feeds, scrape websites, or AI-discover sources for your niche |
+| `generate_post` | Generate a post from topic or source material, using brand voice |
+| `translate_post` | Translate posts to any language, maintaining brand voice |
+| `generate_media` | Generate images via Gemini Imagen or DALL-E |
+
+### Publishing
 
 | Tool | Description |
 |------|-------------|
@@ -34,67 +49,80 @@ That's it. Your AI agent now has a `publish` tool.
 | `list_channels` | Show configured channels |
 | `preview` | Dry-run: see what would be published |
 
-## Platforms
+## Full Pipeline Example
 
-### Telegram
+```
+You (to Claude Code):
+  "I run a fitness blog. Set up my brand, analyze my competitor
+   @fitnessguru, find content sources, write a post about
+   morning routines, generate an image, and publish to Telegram."
+
+Claude Code calls:
+  1. setup_brand(niche="fitness", tone="motivational", ...)
+  2. analyze_competitors(urls=["https://fitnessguru.com"])
+  3. find_sources(action="discover", niche="fitness")
+  4. generate_post(topic="5 morning routines for energy")
+  5. generate_media(post_text="<generated post>")
+  6. publish(text="<post>", image_url="<image>", channel="telegram")
+```
+
+## Environment Variables
+
+### Publishing (at least one platform required)
 
 ```
 TELEGRAM_BOT_TOKEN=123456:ABC-DEF...
 TELEGRAM_CHAT_ID=@my_channel
-```
 
-Bot must be added as admin to the channel with "Post Messages" permission.
-
-### VK
-
-```
 VK_ACCESS_TOKEN=vk1.a.xxx
 VK_GROUP_ID=12345678
-VK_USER_TOKEN=vk1.a.yyy  # optional, for photo uploads
-```
+VK_USER_TOKEN=vk1.a.yyy          # optional, for photo uploads
 
-### MAX (ok.ru/max)
-
-```
 MAX_BOT_TOKEN=xxx
 MAX_CHAT_ID=-12345678
-```
 
-### Threads (Meta)
-
-```
 THREADS_ACCESS_TOKEN=xxx
 THREADS_USER_ID=12345678
 ```
 
-## Multi-Channel Config
+### AI (required for content factory tools)
 
-For multiple channels, use the `PUBLISH_CHANNELS` env var with a JSON array:
+```
+GEMINI_API_KEY=AIza...            # Free tier available
+# or
+OPENAI_API_KEY=sk-...             # Paid
 
-```json
-{
-  "PUBLISH_CHANNELS": "[{\"name\":\"my-tg\",\"platform\":\"telegram\",\"token\":\"123:ABC\",\"chatId\":\"@chan\"},{\"name\":\"my-vk\",\"platform\":\"vk\",\"token\":\"vk1.a.xxx\",\"chatId\":\"12345\",\"groupId\":\"12345\"}]"
-}
+GEMINI_MODEL=gemini-2.5-flash    # optional, default
+OPENAI_MODEL=gpt-4o-mini          # optional, default
 ```
 
-## Examples
+### Multi-Channel Config
 
-**Claude Code:**
-> "Write a short post about our new feature and publish it to my Telegram channel"
+```
+PUBLISH_CHANNELS=[{"name":"my-tg","platform":"telegram","token":"...","chatId":"@chan"},{"name":"my-vk","platform":"vk","token":"...","chatId":"123","groupId":"123"}]
+```
 
-The agent will call the `publish` tool with the generated text.
+### Storage
 
-**Multi-channel:**
-> "Publish this announcement to all my channels"
+```
+PUBLISH_MCP_DATA_DIR=/path/to/data  # optional, default: ./.publish-mcp
+```
 
-The agent will call `publish_all`.
+## Platforms
+
+| Platform | Auth | Publishing |
+|----------|------|-----------|
+| Telegram | Bot token + admin in channel | sendMessage / sendPhoto |
+| VK | Community token (+ user token for photos) | wall.post |
+| MAX | Bot token | sendMessage + photo |
+| Threads | Long-lived access token | Container + publish API |
 
 ## Development
 
 ```bash
 npm install
 npm run build
-echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' | node dist/index.js
+node dist/index.js  # starts MCP server on stdio
 ```
 
 ## License
