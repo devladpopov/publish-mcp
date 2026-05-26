@@ -1,10 +1,10 @@
 {
-  "name": "publish-mcp",
+  "name": "content-factory-mcp",
   "version": "0.1.0",
-  "description": "MCP server for publishing content to Telegram, VK, MAX, and Threads from AI agents",
+  "description": "AI-powered content factory as an MCP server. Generate, translate, and publish to Telegram, VK, MAX, Threads.",
   "type": "module",
   "bin": {
-    "publish-mcp": "dist/index.js"
+    "content-factory-mcp": "dist/index.js"
   },
   "files": [
     "dist"
@@ -16,6 +16,10 @@
   },
   "keywords": [
     "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "content-factory",
+    "content-automation",
     "telegram",
     "vk",
     "max",
@@ -24,10 +28,20 @@
     "social-media",
     "ai-agent",
     "claude",
-    "model-context-protocol"
+    "cursor",
+    "ai-content",
+    "content-generation"
   ],
   "author": "Vladislav Popov",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devladpopov/publish-mcp.git"
+  },
+  "homepage": "https://github.com/devladpopov/publish-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/devladpopov/publish-mcp/issues"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "zod": "^3.24.0"

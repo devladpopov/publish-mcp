@@ -37,7 +37,7 @@ startCommand:
   commandFunction: |-
     (config) => ({
       command: 'npx',
-      args: ['-y', 'publish-mcp'],
+      args: ['-y', 'content-factory-mcp'],
       env: Object.fromEntries(
         Object.entries(config).filter(([_, v]) => v)
       )

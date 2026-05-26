@@ -13,7 +13,7 @@
   "mcpServers": {
     "publish": {
       "command": "npx",
-      "args": ["-y", "publish-mcp"],
+      "args": ["-y", "content-factory-mcp"],
       "env": {
         "TELEGRAM_BOT_TOKEN": "123456:ABC-DEF...",
         "TELEGRAM_CHAT_ID": "@my_channel",
